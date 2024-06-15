@@ -1,0 +1,46 @@
+sudo su
+
+apt install samba samba-common
+
+cd /etc/samba
+
+ls -la
+
+cp smb.conf smb.conf.bkp
+
+echo 0 > smb.conf
+
+nano smb.conf
+
+// configurar o arquivo {{
+[public]
+path = /home/samba
+guest ok = yes
+browseable = yes
+writeable = yes
+printable = no
+create mask = 0777
+force create mode = 0777
+
+[alunosifma]
+Comment = Diretórios dos alunos
+path = /var/samba/alunosifma
+valid users = usuario1, usuario2
+create mask = 0777
+force create mode = 0777
+guest ok = yes
+}}
+
+mkdir /home/samba
+
+chmod 777 /home/samba
+
+mkdir -p /var/samba/alunosifma
+
+chmod 777 /var/samba/alunosifma
+
+chmod -R 777 /var/samba
+
+systemctl restart smbd
+
+systemctl status smbd
